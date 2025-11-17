@@ -156,7 +156,7 @@ source activate /nesi/project/brins03581/env/igv_reports
 
 script can be run in command line:
 
-**Example1 (single sample, multiple regions in a BED file):**
+**Example1 (single samples, multiple regions in a BED file):**
 
 ```
 #single bam track, multiple regions, using bed to define sites
@@ -166,7 +166,32 @@ create_report /home/cenliau/00_nesi_projects/brins03581_nobackup/Cen/IGV/igver_r
 --output /home/cenliau/00_nesi_projects/brins03581_nobackup/Cen/IGV/igv_report_1.html
 ```
 
-Result: 
+Result: igv_report_1.html
+
+**Example2 (multiple samples, multiple regions in gVCF file):**
+
+```
+#VCF contains 9 samples filtered to only has variant with AF>0.75, and only in chr01_hap1
+#Plot IGV only for 2 samples in the VCF file (by defining --samples)
+#Include certain information from VCF file (by defining --sample-columns and --info-columns
+#include also --sampleinfo, but couldn't see it in the html report yet so far
+
+create_report \
+/home/cenliau/00_nesi_projects/brins03581_nobackup/Cen/IGV/combined_9samples_AF0.75_chr01_hap1.deepvariant.vcf.gz \
+--fasta /home/cenliau/00_nesi_projects/brins03581/Ref_Cen/SB2.1_diploid_plusorg.fasta \
+--tracks /home/cenliau/00_nesi_projects/brins03581_nobackup/Genotyping_2025/PB045_controls/unfilteredModBam/20_6121_546_01.1.1.1_sup_5mC_5hmC_6mA_SQK.sorted.bam  /home/cenliau/00_nesi_projects/brins03581_nobackup/Genotyping_2025/PB045_controls/unfilteredModBam/SB1031_PB045.1.1.1_sup_5mC_5hmC_6mA_SQK.sorted.bam \
+--output /home/cenliau/00_nesi_projects/brins03581_nobackup/Cen/IGV/igv_report_20_6121_SB1031_deepvariant_DP_GQ.html \
+--sampleinfo /home/cenliau/00_nesi_projects/brins03581_nobackup/Cen/IGV/IGV_report_sample_info_file.txt \
+--samples 20_6121_546_01 SB1031_PB045 \ #Which samples to be in the report
+--sample-columns GT DP GQ \ #what sample informations to be included in the report
+--info-columns AF #what info information to be included in the report
+```
+
+Result: igv_report_20_6121_SB1031_deepvariant_DP_GQ.html
+
+File for these 2 samples and small VCF is already quite large (~70 MB), but can still run interactively on Jupyter. Run on larger VCF and more samples would possibly need to be run in slurm script.
+
+
 
 
 
